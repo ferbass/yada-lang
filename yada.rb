@@ -21,19 +21,19 @@ class Yada
     end
 
     if exp[0] == '+'
-      return eval(exp[1]) + eval(exp[2])
+      return eval(exp[1], env) + eval(exp[2], env)
     end
 
     if exp[0] == '-'
-      return eval(exp[1]) - eval(exp[2])
+      return eval(exp[1], env) - eval(exp[2], env)
     end
 
     if exp[0] == '*'
-      return eval(exp[1]) * eval(exp[2])
+      return eval(exp[1], env) * eval(exp[2], env)
     end
 
     if exp[0] == '/'
-      return eval(exp[1]) / eval(exp[2])
+      return eval(exp[1], env) / eval(exp[2], env)
     end
 
     if is_string(exp)
@@ -45,7 +45,7 @@ class Yada
     # Variable declaration
     if exp[0] == 'var'
       _, variable, value = exp
-      return env.define(variable, eval(value))
+      return env.define(variable, eval(value, env))
     end
 
     # Variable access
