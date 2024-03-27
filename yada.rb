@@ -53,7 +53,7 @@ class Yada
       return env.lookup(exp)
     end
 
-    raise StandardError.new, 'Yada~Error: Invalid expression'
+    raise StandardError.new('Yada~StandardError: Invalid expression')
   end
 
   def is_number(exp)

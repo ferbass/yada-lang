@@ -59,6 +59,10 @@ class Testyada < Test::Unit::TestCase
     assert_equal(@yada.eval(['var', 'x', 5]), 5)
     #variable access
     assert_equal(@yada.eval('x'), 5)
+
+    assert_raises(NameError) do
+      @yada.eval('y')
+    end
   end
 
 end
