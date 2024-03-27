@@ -4,7 +4,7 @@ require './yada'
 class Testyada < Test::Unit::TestCase
 
   def setup
-    @yada = yada.new
+    @yada = Yada.new
   end
 
   def test_yada_number
