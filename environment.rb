@@ -10,8 +10,8 @@ class Environment
   # Initialize the environment
   # @return [Environment] the environment
   #
-  def initialize
-    @record = {}
+  def initialize (record = {})
+    @record = record
   end
 
   #
@@ -32,7 +32,7 @@ class Environment
   #
   def lookup(name)
     if !@record[name]
-      raise NameError.new('Yada~UndefinedError: Undefined variable #{name}')
+      raise NameError.new("Yada~UndefinedError: Undefined variable #{name}")
     end
     return @record[name]
   end
