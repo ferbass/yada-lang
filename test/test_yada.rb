@@ -1,10 +1,18 @@
 require 'test/unit'
 require './yada'
+require './environment'
 
 class Testyada < Test::Unit::TestCase
 
   def setup
-    @yada = Yada.new
+    env = Environment.new({
+      'nil' => nil,
+      'false' => false,
+      'true' => true,
+      'VERSION' => '0.0.1'
+    }
+    )
+    @yada = Yada.new(env)
   end
 
   # Math
@@ -63,6 +71,11 @@ class Testyada < Test::Unit::TestCase
     assert_raises(NameError) do
       @yada.eval('y')
     end
+
+    #test prebaked variables
+    assert_equal(@yada.eval('VERSION'), '0.0.1')
+    assert_equal(@yada.eval(['var', 'true_value', 'true']), true)
+    assert_equal(@yada.eval(['var', 'value', 'nil']), nil)
   end
 
 end

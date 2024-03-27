@@ -31,7 +31,7 @@ class Environment
   # @return [Object] the variable value
   #
   def lookup(name)
-    if !@record[name]
+    unless @record.key?(name)
       raise NameError.new("Yada~UndefinedError: Undefined variable #{name}")
     end
     return @record[name]
