@@ -53,6 +53,12 @@ class Yada
       return env.lookup(exp)
     end
 
+    # block: sequence of expressions
+    if exp[0] == 'begin'
+      block_env = Environment.new({}, env)
+      return eval_block(exp, block_env)
+    end
+
     raise StandardError.new('Yada~StandardError: Invalid expression')
   end
 
@@ -66,6 +72,16 @@ class Yada
 
   def is_variable_name(exp)
     return exp.is_a?(String) && /^[a-zA-Z_][a-zA-Z0-9_]*$/.match(exp)
+  end
+
+  def eval_block(exp, env)
+    _, *exps = exp
+    result = nil
+    exps.each do |e|
+      result = eval(e, env)
+    end
+
+    result
   end
 
 end
