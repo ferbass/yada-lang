@@ -40,16 +40,20 @@ class Yada
       return exp.slice(1, exp.length - 2)
     end
 
+    # Variables
+
+    # Variable declaration
     if exp[0] == 'var'
       _, variable, value = exp
       return env.define(variable, eval(value))
     end
 
+    # Variable access
     if is_variable_name(exp)
-      return exp
+      return env.lookup(exp)
     end
 
-    throw 'Yada~Error: Invalid expression'
+    raise StandardError.new, 'Yada~Error: Invalid expression'
   end
 
   def is_number(exp)
@@ -61,7 +65,7 @@ class Yada
   end
 
   def is_variable_name(exp)
-    return is_string(exp) && /^[a-zA-Z_][a-zA-Z0-9_]*$/.match(exp)
+    return exp.is_a?(String) && /^[a-zA-Z_][a-zA-Z0-9_]*$/.match(exp)
   end
 
 end

@@ -18,9 +18,23 @@ class Environment
   # Define a variable with given name and value
   # @param name [String] variable name
   # @param value [Object] variable value
+  # @return [Object] the variable value
+  #
   def define(name, value)
     @record[name] = value
     return value
+  end
+
+  #
+  # Lookup a variable with given name
+  # @param name [String] variable name
+  # @return [Object] the variable value
+  #
+  def lookup(name)
+#    if !@record[name]
+#      raise StandardError.new, 'Yada~Error: Undefined variable'
+#    end
+    return @record[name]
   end
 
 

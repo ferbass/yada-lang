@@ -55,7 +55,10 @@ class Testyada < Test::Unit::TestCase
 
   # Variables
   def test_yada_variable
-    assert_equal(@yada.eval(['var', 'a', 5]), 5)
+    #variable declaration
+    assert_equal(@yada.eval(['var', 'x', 5]), 5)
+    #variable access
+    assert_equal(@yada.eval('x'), 5)
   end
 
 end
