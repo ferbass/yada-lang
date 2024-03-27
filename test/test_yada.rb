@@ -7,6 +7,7 @@ class Testyada < Test::Unit::TestCase
     @yada = Yada.new
   end
 
+  # Math
   def test_yada_number
     assert_equal(@yada.eval(1), 1)
   end
@@ -47,9 +48,14 @@ class Testyada < Test::Unit::TestCase
     assert_equal(@yada.eval(['/', ['+', ['*', 2, 5], ['-', 8, 1]], 5]), 3)
   end
 
-
+  # String
   def test_yada_string
     assert_equal(@yada.eval('"a"'), 'a')
+  end
+
+  # Variables
+  def test_yada_variable
+    assert_equal(@yada.eval(['var', 'a', 5]), 5)
   end
 
 end
