@@ -5,7 +5,7 @@
 # This is a simple interpreter for the Ya language.
 #
 
-class Ya
+class Yada
   def eval(exp)
 
     if is_number(exp)
