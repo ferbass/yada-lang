@@ -49,7 +49,7 @@ class Yada
       return exp
     end
 
-    throw 'YaError: Invalid expression'
+    throw 'Yada~Error: Invalid expression'
   end
 
   def is_number(exp)
