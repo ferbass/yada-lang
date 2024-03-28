@@ -60,6 +60,20 @@ class Yada
       return eval(condition, env) ? eval(true_exp, env) : eval(false_exp, env)
     end
 
+    # While expression
+    # ['while', condition, body]
+
+    if exp[0] == 'while'
+      _, condition, body = exp
+
+      result = nil
+      while eval(condition, env)
+        result = eval(body, env)
+      end
+      return result
+    end
+
+
     # Comparisson operators
     # '>', '<', '>=', '<=', '==', '!=', 'and', 'or'
     # ['>', 2, 1] => true
