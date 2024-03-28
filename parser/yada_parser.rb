@@ -90,7 +90,7 @@ class YYParse
 
   @@tokenizer = nil
 
-def self._handler1(param_1)
+  def self._handler1(param_1)
 YYParse.__ = param_1
 end
 
@@ -316,7 +316,7 @@ class SyntaxToolTokenizer__
 [/\A\s+/, '_lex_rule3'],
 [/\A"[^\"]*"/, '_lex_rule4'],
 [/\A\d+/, '_lex_rule5'],
-[/\A[\w\-+*=<>]+/, '_lex_rule6'],
+[/\A[\w\-+*=<>\/]+/, '_lex_rule6'],
 [/\A\s+/, '_lex_rule7']]
   @@lex_rules_by_conditions = {'INITIAL' => [0, 1, 2, 3, 4, 5, 6]}
 
@@ -353,7 +353,7 @@ return "')'";
 end
 
 def _lex_rule3()
-# skip whitespace
+#/* skip whitespace */
 end
 
 def _lex_rule4()
