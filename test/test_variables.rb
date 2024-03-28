@@ -28,6 +28,10 @@ class TestVariables < Test::Unit::TestCase
     assert_equal(@yada.eval('VERSION'), '0.0.1')
     assert_equal(@yada.eval(['var', 'true_value', 'true']), true)
     assert_equal(@yada.eval(['var', 'value', 'nil']), nil)
+
+    #test set variable
+    assert_equal(@yada.eval(['var', 'y', 5]), 5)
+    assert_equal(@yada.eval(['set', 'y', 10]), 10)
   end
 
 

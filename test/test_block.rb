@@ -22,7 +22,7 @@ class TestBlock < Test::Unit::TestCase
       ]),
       15)
 
-    # nested environment
+    # block nested environment
     assert_equal(@yada.eval(
       ['begin',
        ['var', 'x', 5],
@@ -33,5 +33,28 @@ class TestBlock < Test::Unit::TestCase
        'x'
       ]),
       5)
+
+    assert_equal(@yada.eval(
+      ['begin',
+       ['var', 'x', 5],
+       ['var', 'result', ['begin',
+        ['var', 'y', ['+', 'x', 5]],
+        'y'
+       ]],
+       'result'
+      ]),
+      10)
+
+    assert_equal(@yada.eval(
+      ['begin',
+       ['var', 'x', 5],
+       ['var', 'result', ['begin',
+        ['set', 'x', 10]],
+        'x'
+       ],
+       'result'
+      ]),
+      10
+    )
   end
 end

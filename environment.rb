@@ -6,6 +6,8 @@
 
 class Environment
 
+  attr_reader :record
+
   #
   # Initialize the environment
   # @return [Environment] the environment
@@ -26,16 +28,60 @@ class Environment
     return value
   end
 
+
+  #
+  # Assign a variable with given name and value
+  # @param name [String] variable name
+  # @param value [Object] variable value
+  # @return [Object] the variable value
+  # @raise [NameError] if the variable is not found
+  #
+  def assign(name, value)
+    resolve(name).record[name] = value
+    return value
+  end
+
   #
   # Lookup a variable with given name
   # @param name [String] variable name
   # @return [Object] the variable value
+  # @raise [NameError] if the variable is not found
   #
   def lookup(name)
-    unless @record.key?(name)
+    return lookup_value(name)
+  end
+
+  #
+  # Lookup a variable with given name
+  # @param name [String] variable name
+  # @return [Object] the variable value
+  # @raise [NameError] if the variable is not found
+  #
+
+  def lookup_value(name)
+    if @record.key?(name)
+      return @record[name]
+    elsif @parent
+      return @parent.lookup_value(name)
+    else
       raise NameError.new("Yada~UndefinedError: Undefined variable #{name}")
     end
-    return @record[name]
+  end
+
+  #
+  # Resolve a variable with given name
+  # @param name [String] variable name
+  # @return [Environment] the environment
+  # @raise [NameError] if the variable is not found
+  #
+  def resolve(name)
+    if @record.key?(name)
+      return self
+    end
+    if @parent
+      return @parent.resolve(name)
+    end
+    raise NameError.new("Yada~UndefinedError: Undefined variable #{name}")
   end
 
 end

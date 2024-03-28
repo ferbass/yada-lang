@@ -53,6 +53,14 @@ class Yada
       return env.lookup(exp)
     end
 
+    # Set variable
+    # ['set', 'variable', value]
+    # ['set', 'x', 5]
+    if exp[0] == 'set'
+      _, variable, value = exp
+      return env.assign(variable, eval(value, env))
+    end
+
     # block: sequence of expressions
     if exp[0] == 'begin'
       block_env = Environment.new({}, env)
