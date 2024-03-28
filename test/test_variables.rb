@@ -1,17 +1,6 @@
 require './test/test_yada.rb'
 
-class TestVariables < Test::Unit::TestCase
-
-  def setup
-    env = Environment.new({
-      'nil' => nil,
-      'false' => false,
-      'true' => true,
-      'VERSION' => '0.0.1'
-    }
-    )
-    @yada = Yada.new(env)
-  end
+class TestVariables < TestYada
 
  # Variables
   def test_yada_variable

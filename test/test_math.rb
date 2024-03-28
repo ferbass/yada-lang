@@ -1,11 +1,6 @@
 require './test/test_yada.rb'
 
-class TestMath < Test::Unit::TestCase
-
-  def setup
-    @yada = Yada.new
-  end
-
+class TestMath < TestYada
 
   def test_yada_number
     assert_equal(@yada.eval(1), 1)

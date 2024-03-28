@@ -1,10 +1,6 @@
 require './test/test_yada.rb'
 
-class TestIfExpression < Test::Unit::TestCase
-
-  def setup
-    @yada = Yada.new
-  end
+class TestIfExpression < TestYada
 
   def test_if_expression
     assert_equal(@yada.eval(

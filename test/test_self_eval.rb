@@ -1,10 +1,6 @@
 require './test/test_yada.rb'
 
-class TestEval < Test::Unit::TestCase
-
-  def setup
-    @yada = Yada.new
-  end
+class TestEval < TestYada
 
  # String
   def test_yada_string

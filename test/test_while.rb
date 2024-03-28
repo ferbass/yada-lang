@@ -1,10 +1,6 @@
 require './test/test_yada.rb'
 
-class TestWhile < Test::Unit::TestCase
-
-  def setup
-    @yada = Yada.new
-  end
+class TestWhile < TestYada
 
   def test_while
     assert_equal(@yada.eval(
