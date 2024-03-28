@@ -6,16 +6,25 @@
 #
 #
 
-require './environment'
+require './lib/environment.rb'
 
 class Yada
 
   def initialize(global = nil)
+    variables = {
+      'nil' => nil,
+      'false' => false,
+      'true' => true,
+      'VERSION' => '0.0.1'
+    }
     @global = global || Environment.new
   end
 
   def eval(exp, env = @global)
 
+    # Self-evaluating expressions
+
+    # Numbers
     if is_number(exp)
       return exp
     end
@@ -36,9 +45,58 @@ class Yada
       return eval(exp[1], env) / eval(exp[2], env)
     end
 
+    # Strings
+    # ["Hello"] => "Hello"
+
     if is_string(exp)
       return exp.slice(1, exp.length - 2)
     end
+
+    # If expression
+    # ['if', condition, true, false]
+
+    if exp[0] == 'if'
+      _, condition, true_exp, false_exp = exp
+      return eval(condition, env) ? eval(true_exp, env) : eval(false_exp, env)
+    end
+
+    # Comparisson operators
+    # '>', '<', '>=', '<=', '==', '!=', 'and', 'or'
+    # ['>', 2, 1] => true
+    #
+
+    if exp[0] == '>'
+      return eval(exp[1], env) > eval(exp[2], env)
+    end
+
+    if exp[0] == '<'
+      return eval(exp[1], env) < eval(exp[2], env)
+    end
+
+    if exp[0] == '>='
+      return eval(exp[1], env) >= eval(exp[2], env)
+    end
+
+    if exp[0] == '<='
+      return eval(exp[1], env) <= eval(exp[2], env)
+    end
+
+    if exp[0] == '=='
+      return eval(exp[1], env) == eval(exp[2], env)
+    end
+
+    if exp[0] == '!='
+      return eval(exp[1], env) != eval(exp[2], env)
+    end
+
+    if exp[0] == 'and'
+      return eval(exp[1], env) && eval(exp[2], env)
+    end
+
+    if exp[0] == 'or'
+      return eval(exp[1], env) || eval(exp[2], env)
+    end
+
 
     # Variables
 
@@ -67,7 +125,7 @@ class Yada
       return eval_block(exp, block_env)
     end
 
-    raise StandardError.new('Yada~StandardError: Invalid expression')
+    raise StandardError.new("Yada~StandardError: Invalid expression #{exp}")
   end
 
   def is_number(exp)
