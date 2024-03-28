@@ -11,13 +11,28 @@ require './lib/environment.rb'
 class Yada
 
   def initialize(global = nil)
-    variables = {
+    global_env = {
       'nil' => nil,
       'false' => false,
       'true' => true,
-      'VERSION' => '0.0.1'
+      'VERSION' => '0.0.1',
+      # Built-in functions
+      # Math
+      '+' => ->(a, b) { a + b },
+      '-' => ->(a, b = nil) { b ? a - b : -a },
+      '*' => ->(a, b) { a * b },
+      '/' => ->(a, b) { a / b },
+      # Comparison
+      '>' => ->(a, b) { a > b },
+      '<' => ->(a, b) { a < b },
+      '>=' => ->(a, b) { a >= b },
+      '<=' => ->(a, b) { a <= b },
+      '==' => ->(a, b) { a == b },
+      '!=' => ->(a, b) { a != b },
+      'and' => ->(a, b) { a && b },
+      'or' => ->(a, b) { a || b }
     }
-    @global = global || Environment.new
+    @global = global || Environment.new(global_env)
   end
 
   def eval(exp, env = @global)
@@ -29,25 +44,7 @@ class Yada
       return exp
     end
 
-    if exp[0] == '+'
-      return eval(exp[1], env) + eval(exp[2], env)
-    end
-
-    if exp[0] == '-'
-      return eval(exp[1], env) - eval(exp[2], env)
-    end
-
-    if exp[0] == '*'
-      return eval(exp[1], env) * eval(exp[2], env)
-    end
-
-    if exp[0] == '/'
-      return eval(exp[1], env) / eval(exp[2], env)
-    end
-
-    # Strings
-    # ["Hello"] => "Hello"
-
+    # Strings/Symbols
     if is_string(exp)
       return exp.slice(1, exp.length - 2)
     end
@@ -72,46 +69,6 @@ class Yada
       end
       return result
     end
-
-
-    # Comparisson operators
-    # '>', '<', '>=', '<=', '==', '!=', 'and', 'or'
-    # ['>', 2, 1] => true
-    #
-
-    if exp[0] == '>'
-      return eval(exp[1], env) > eval(exp[2], env)
-    end
-
-    if exp[0] == '<'
-      return eval(exp[1], env) < eval(exp[2], env)
-    end
-
-    if exp[0] == '>='
-      return eval(exp[1], env) >= eval(exp[2], env)
-    end
-
-    if exp[0] == '<='
-      return eval(exp[1], env) <= eval(exp[2], env)
-    end
-
-    if exp[0] == '=='
-      return eval(exp[1], env) == eval(exp[2], env)
-    end
-
-    if exp[0] == '!='
-      return eval(exp[1], env) != eval(exp[2], env)
-    end
-
-    if exp[0] == 'and'
-      return eval(exp[1], env) && eval(exp[2], env)
-    end
-
-    if exp[0] == 'or'
-      return eval(exp[1], env) || eval(exp[2], env)
-    end
-
-
     # Variables
 
     # Variable declaration
@@ -139,6 +96,24 @@ class Yada
       return eval_block(exp, block_env)
     end
 
+    # Function calls
+    # (function_name arg1 arg2 ...)
+    #
+    if exp.is_a?(Array)
+      fn = eval(exp[0], env)
+      args = exp[1..-1].map { |arg| eval(arg, env) }
+
+      # 1. Native function:
+      if fn.is_a?(Proc) || fn.is_a?(Method)
+        return fn.call(*args)
+      end
+
+      # 2. User-defined function:
+      #return _call_user_defined_function(fn, args)
+    end
+
+
+
     raise StandardError.new("Yada~StandardError: Invalid expression #{exp}")
   end
 
@@ -151,7 +126,7 @@ class Yada
   end
 
   def is_variable_name(exp)
-    return exp.is_a?(String) && /^[a-zA-Z_][a-zA-Z0-9_]*$/.match(exp)
+    return exp.is_a?(String) && /^[+\-*\/<>=,!a-zA-Z0-9_]+$/.match(exp)
   end
 
   def eval_block(exp, env)

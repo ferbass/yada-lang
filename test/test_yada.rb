@@ -7,13 +7,7 @@ require './test/test_util_yada.rb'
 class TestYada < TestUtil
 
   def setup
-    env = Environment.new({
-      'nil' => nil,
-      'false' => false,
-      'true' => true,
-      'VERSION' => '0.0.1'
-    })
-    @yada = Yada.new(env)
+    @yada = Yada.new
   end
 
 end
