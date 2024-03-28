@@ -1,6 +1,6 @@
 require './test/test_yada.rb'
 
-class TestBlock < Test::Unit::TestCase
+class TestBlock < TestYada
 
   def setup
     @yada = Yada.new
@@ -56,5 +56,15 @@ class TestBlock < Test::Unit::TestCase
       ]),
       10
     )
+  end
+
+  def test_with_ast_syntax
+    yada_assert_equal(@yada,'(begin (var x 1) (* x 10))', 10)
+    yada_assert_equal(@yada,
+                      '(begin
+                       (var x 10)
+                       (var y 20)
+                       (+ (* x 10) y))',
+                      120)
   end
 end

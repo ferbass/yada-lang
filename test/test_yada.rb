@@ -1,8 +1,10 @@
 require 'test/unit'
 require './lib/yada.rb'
 require './lib/environment.rb'
+require './parser/yada_parser.rb'
+require './test/test_util_yada.rb'
 
-class TestYada < Test::Unit::TestCase
+class TestYada < TestUtil
 
   def setup
     env = Environment.new({
@@ -22,5 +24,3 @@ require './test/test_self_eval.rb'
 require './test/test_block.rb'
 require './test/test_if_expression.rb'
 require './test/test_while.rb'
-require './test/test_util.rb'
-
