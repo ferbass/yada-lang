@@ -28,10 +28,20 @@ class Yada
       '>=' => ->(a, b) { a >= b },
       '<=' => ->(a, b) { a <= b },
       '==' => ->(a, b) { a == b },
-      '!=' => ->(a, b) { a != b },
+      '!='  => ->(a, b) { a != b },
       'not' => ->(a, b = nil) { b ? a != b : !a},
       'and' => ->(a, b) { a && b },
-      'or' => ->(a, b) { a || b }
+      'or'  => ->(a, b) { a || b },
+
+      # Print
+      # (say "Hello" "World!")
+      # => "Hello World!"
+      # TODO: Implement a better way to print
+      'say' => ->(*a) {
+        output = a.join( ' ')
+        puts output
+        return output
+      }
     }
     @global = global || Environment.new(global_env)
   end

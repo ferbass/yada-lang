@@ -27,4 +27,10 @@ class TestBuiltInFunctions < TestYada
     yada_assert_equal(@yada, '(and true false)', false)
   end
 
+  def test_built_in_functions_print
+    yada_assert_equal(@yada, '(say "1")', '1')
+    yada_assert_equal(@yada, '(say "a")', 'a')
+    yada_assert_equal(@yada, '(say "Hello" "World!")', 'Hello World!')
+  end
+
 end
