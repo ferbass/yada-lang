@@ -21,9 +21,10 @@ class TestBuiltInFunctions < TestYada
     yada_assert_equal(@yada, '(== 1 2)', false)
     yada_assert_equal(@yada, '(!= 1 1)', false)
     yada_assert_equal(@yada, '(!= 1 2)', true)
-
-
-
+    yada_assert_equal(@yada, '(not 2 1)', true)
+    yada_assert_equal(@yada, '(not 1 1)', false)
+    yada_assert_equal(@yada, '(and true true)', true)
+    yada_assert_equal(@yada, '(and true false)', false)
   end
 
 end
