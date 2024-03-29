@@ -107,6 +107,20 @@ class Yada
       return eval_block(exp, block_env)
     end
 
+    # Function definition
+    # ['defun', 'function_name', ['arg1', 'arg2', ...], body]
+    if exp[0] == 'defun'
+      _tag, name, args, body = exp
+      fn = {
+        args: args,
+        body: body,
+        env: env
+      }
+
+      return env.define(name, fn)
+    end
+
+
     # Function calls
     # (function_name arg1 arg2 ...)
     #
@@ -120,13 +134,25 @@ class Yada
       end
 
       # 2. User-defined function:
-      #return _call_user_defined_function(fn, args)
+      activation_record = {}
+      fn[:args].each_with_index do |arg, i|
+        activation_record[arg] = args[i]
+      end
+
+      activation_env = Environment.new(activation_record, fn[:env])
+      return eval_body(fn[:body], activation_env)
     end
-
-
 
     raise StandardError.new("Yada~StandardError: Invalid expression #{exp}")
   end
+
+  def eval_body(body, env)
+    if (body[0] == 'begin')
+      return eval_block(body, env)
+    end
+    return eval(body, env)
+  end
+
 
   def is_number(exp)
     return exp.is_a? Numeric
