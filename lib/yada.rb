@@ -109,17 +109,31 @@ class Yada
 
     # Function definition
     # ['defun', 'function_name', ['arg1', 'arg2', ...], body]
+    # (defun add (x y) (+ x y))
+    #
+    # Syntax sugar for: (var add (lambda (x y) (+ x y))
     if exp[0] == 'defun'
       _tag, name, args, body = exp
-      fn = {
+
+      # JIT-transpile to a variable declaration
+      var_exp = ['var', name, ['lambda', args, body]]
+
+      return eval(var_exp, env)
+    end
+
+    # Lambda definition
+    # ['lambda', ['arg1', 'arg2', ...], body]
+    # (lambda (x) (+ x 1))
+
+    if exp[0] == 'lambda'
+      _tag, args, body = exp
+
+      return {
         args: args,
         body: body,
         env: env
       }
-
-      return env.define(name, fn)
     end
-
 
     # Function calls
     # (function_name arg1 arg2 ...)
