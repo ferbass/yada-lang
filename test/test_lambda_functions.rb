@@ -1,5 +1,3 @@
-require_relative 'test_yada'
-
 class TestLambdaFunction < TestYada
 
     def test_lambda_function

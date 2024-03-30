@@ -1,5 +1,3 @@
-require_relative 'test_yada.rb'
-
 class TestWhile < TestYada
 
   def test_while

@@ -1,5 +1,3 @@
-require_relative 'test_yada.rb'
-
 class TestMath < TestYada
 
   def test_yada_number

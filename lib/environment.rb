@@ -12,7 +12,7 @@ class Environment
   # Initialize the environment
   # @return [Environment] the environment
   #
-  def initialize (record = {}, parent = nil)
+  def initialize(record = {}, parent = nil)
     @record = record
     @parent = parent
   end

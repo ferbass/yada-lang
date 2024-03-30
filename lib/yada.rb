@@ -101,8 +101,6 @@ class Yada
   #
   # Syntax sugar for: (var add (lambda (x y) (+ x y))
   def eval_defun(exp, env)
-    _tag, name, args, body = exp
-
     # JIT-transpile to a variable declaration
     var_exp = @transformer.defun_to_var_lambda(exp)
 

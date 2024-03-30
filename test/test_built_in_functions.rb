@@ -1,5 +1,3 @@
-require_relative 'test_yada'
-
 class TestBuiltInFunctions < TestYada
 
   def test_built_in_functions

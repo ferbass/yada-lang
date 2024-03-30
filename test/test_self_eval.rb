@@ -1,5 +1,3 @@
-require './test/test_yada.rb'
-
 class TestEval < TestYada
 
  # String

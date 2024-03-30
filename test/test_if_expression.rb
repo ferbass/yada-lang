@@ -1,5 +1,3 @@
-require_relative 'test_yada'
-
 class TestIfExpression < TestYada
 
   def test_if_expression

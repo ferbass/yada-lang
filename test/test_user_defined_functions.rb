@@ -1,5 +1,3 @@
-require_relative 'test_yada'
-
 class TestUserDefinedFunctions < TestYada
 
   def test_user_defined_functions

@@ -1,5 +1,3 @@
-require_relative 'test_yada'
-
 class TestSwitchExpression < TestYada
 
   def test_switch_expression

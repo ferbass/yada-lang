@@ -1,5 +1,3 @@
-require_relative 'test_yada.rb'
-
 class TestVariables < TestYada
 
  # Variables

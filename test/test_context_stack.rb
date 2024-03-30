@@ -1,5 +1,3 @@
-require_relative 'test_yada'
-
 class TestExecutionContextStack < TestYada
 
   def test_nested_function_calls_with_shadowing_and_recursion

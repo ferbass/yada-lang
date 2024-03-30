@@ -1,5 +1,3 @@
-require_relative 'test_yada'
-
 class TestForLoop < TestYada
 
     def test_for_loop
