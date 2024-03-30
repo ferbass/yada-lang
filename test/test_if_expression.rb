@@ -1,4 +1,4 @@
-require './test/test_yada.rb'
+require_relative 'test_yada'
 
 class TestIfExpression < TestYada
 

@@ -8,6 +8,7 @@
 
 require_relative 'environment.rb'
 require_relative 'execution_context.rb'
+require_relative 'transformer/transformer.rb'
 
 class Yada
 
@@ -46,6 +47,7 @@ class Yada
     }
     @execution_stack = [] # Initialize the stack
     @global = global || Environment.new(global_env)
+    @transformer = Transformer.new
   end
 
   def eval(exp, env = @global)
@@ -68,6 +70,18 @@ class Yada
     if exp[0] == 'if'
       _, condition, true_exp, false_exp = exp
       return eval(condition, env) ? eval(true_exp, env) : eval(false_exp, env)
+    end
+
+    if exp[0] == 'default'
+      _, default_exp = exp
+      return eval(default_exp, env)
+    end
+
+    # Switch expression
+    # ['switch', ['case1', 'block1'], ['case2', 'block2'], ['default', 'block3']]
+    if exp[0] == 'switch'
+      if_exp = @transformer.switch_to_if(exp)
+      return eval(if_exp, env)
     end
 
     # While expression
@@ -118,7 +132,7 @@ class Yada
       _tag, name, args, body = exp
 
       # JIT-transpile to a variable declaration
-      var_exp = ['var', name, ['lambda', args, body]]
+      var_exp = @transformer.defun_to_var_lambda(exp)
 
       return eval(var_exp, env)
     end
