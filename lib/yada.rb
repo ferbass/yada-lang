@@ -10,6 +10,7 @@ require_relative 'environment.rb'
 require_relative 'execution_context.rb'
 require_relative 'transformer/transformer.rb'
 require_relative 'native_functions.rb'
+require_relative 'error/yada_error.rb'
 
 class Yada
 
@@ -84,7 +85,7 @@ class Yada
       return result
     end
 
-    raise StandardError.new("Yada~StandardError: Invalid expression #{exp}")
+    raise YadaError.new("Yada~Error: Invalid expression #{exp}")
   end
 
   private
@@ -110,7 +111,6 @@ class Yada
     if_exp = @transformer.switch_to_if(exp)
     return eval(if_exp, env)
   end
-
 
   # While expression
   # ['while', condition, body]
