@@ -8,6 +8,8 @@ class TestUserDefinedFunctions < TestYada
                                 (* x x))
                                (square 5))', 25)
 
+    # Comlexy body
+    # The body of a function can be a sequence of expressions.
     yada_assert_equal(@yada, '(begin
                                (defun calc (x y)
                                 (begin
@@ -16,6 +18,8 @@ class TestUserDefinedFunctions < TestYada
                                 ))
                                (calc 5 10))', 60)
 
+    # Clojures
+    # A closure is a function that captures the environment in which it was created.
     yada_assert_equal(@yada, '(begin
                                (var value 100)
                                (defun calc (x y)
@@ -27,6 +31,16 @@ class TestUserDefinedFunctions < TestYada
                                 ))
                                (var fn (calc 20 10))
                                (fn 30))', 160)
+
+    # Recursive Functions
+    # A function can call itself.
+    #
+    yada_assert_equal(@yada, '(begin
+                               (defun factorial (x)
+                                (if (<= x 1)
+                                 1
+                                 (* x (factorial (- x 1)))))
+                               (factorial 5))', 120)
   end
 
 end
