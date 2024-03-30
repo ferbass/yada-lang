@@ -12,7 +12,7 @@ class TestYada < TestUtil
 
 end
 
-require_relative 'test_math.rb'
+require_relative 'test_math_operators.rb'
 require_relative 'test_variables.rb'
 require_relative 'test_self_eval.rb'
 require_relative 'test_block.rb'
