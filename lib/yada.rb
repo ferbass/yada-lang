@@ -24,6 +24,13 @@ class Yada
       '-' => ->(a, b = nil) { b ? a - b : -a },
       '*' => ->(a, b) { a * b },
       '/' => ->(a, b) { a / b },
+      '++' => ->(a) { a + 1 },
+      '--' => ->(a) { a - 1 },
+      '+=' => ->(a, b) { a += b },
+      '-=' => ->(a, b) { a -= b },
+      '*=' => ->(a, b) { a *= b },
+      '/=' => ->(a, b) { a /= b },
+      '^' => ->(a, b) { a ** b },
       # Comparison
       '>' => ->(a, b) { a > b },
       '<' => ->(a, b) { a < b },
@@ -199,13 +206,14 @@ class Yada
     raise StandardError.new("Yada~StandardError: Invalid expression #{exp}")
   end
 
+  private
+
   def eval_body(body, env)
     if (body[0] == 'begin')
       return eval_block(body, env)
     end
     return eval(body, env)
   end
-
 
   def is_number(exp)
     return exp.is_a? Numeric
@@ -216,7 +224,7 @@ class Yada
   end
 
   def is_variable_name(exp)
-    return exp.is_a?(String) && /^[+\-*\/<>=,!a-zA-Z0-9_]+$/.match(exp)
+    return exp.is_a?(String) && /^[+\-*\/<>=,!^a-zA-Z0-9_]+$/.match(exp)
   end
 
   def eval_block(exp, env)
