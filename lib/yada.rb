@@ -9,51 +9,13 @@
 require_relative 'environment.rb'
 require_relative 'execution_context.rb'
 require_relative 'transformer/transformer.rb'
+require_relative 'native_functions.rb'
 
 class Yada
 
   def initialize(global = nil)
-    global_env = {
-      'nil' => nil,
-      'false' => false,
-      'true' => true,
-      'VERSION' => '0.0.1',
-      # Built-in functions
-      # Math
-      '+' => ->(a, b) { a + b },
-      '-' => ->(a, b = nil) { b ? a - b : -a },
-      '*' => ->(a, b) { a * b },
-      '/' => ->(a, b) { a / b },
-      '++' => ->(a) { a + 1 },
-      '--' => ->(a) { a - 1 },
-      '+=' => ->(a, b) { a += b },
-      '-=' => ->(a, b) { a -= b },
-      '*=' => ->(a, b) { a *= b },
-      '/=' => ->(a, b) { a /= b },
-      '^' => ->(a, b) { a ** b },
-      # Comparison
-      '>' => ->(a, b) { a > b },
-      '<' => ->(a, b) { a < b },
-      '>=' => ->(a, b) { a >= b },
-      '<=' => ->(a, b) { a <= b },
-      '==' => ->(a, b) { a == b },
-      '!='  => ->(a, b) { a != b },
-      'not' => ->(a, b = nil) { b ? a != b : !a},
-      'and' => ->(a, b) { a && b },
-      'or'  => ->(a, b) { a || b },
-
-      # Print
-      # (say "Hello" "World!")
-      # => "Hello World!"
-      # TODO: Implement a better way to print
-      'say' => ->(*a) {
-        output = a.join( ' ')
-        puts output
-        return output
-      }
-    }
     @execution_stack = [] # Initialize the stack
-    @global = global || Environment.new(global_env)
+    @global = global || Environment.new(NativeFunctions.functions, nil)
     @transformer = Transformer.new
   end
 
