@@ -14,6 +14,8 @@ class TestVariables < TestYada
       @yada.eval('y')
     end
 
+    yada_assert_raises(@yada, 'y', 'Yada~UndefinedError: Undefined \'y\'')
+
     #test prebaked variables
     yada_assert_equal(@yada, 'VERSION', '0.0.1')
     yada_assert_equal(@yada, '(var true_value true)', true)

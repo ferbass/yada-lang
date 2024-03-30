@@ -32,7 +32,6 @@ class TestUtil < Test::Unit::TestCase
     end
   end
 
-
   private
 
   def capture_stdout
