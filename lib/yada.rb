@@ -6,7 +6,8 @@
 #
 #
 
-require './lib/environment.rb'
+require_relative 'environment.rb'
+require_relative 'execution_context.rb'
 
 class Yada
 
@@ -43,6 +44,7 @@ class Yada
         return output
       }
     }
+    @execution_stack = [] # Initialize the stack
     @global = global || Environment.new(global_env)
   end
 
@@ -154,7 +156,17 @@ class Yada
       end
 
       activation_env = Environment.new(activation_record, fn[:env])
-      return eval_body(fn[:body], activation_env)
+
+      new_context = ExecutionContext.new(activation_env, nil) # Assuming ExecutionContext is a class you've defined
+      @execution_stack.push(new_context)
+
+      begin
+        result = eval_body(fn[:body], activation_env)
+      ensure
+        @execution_stack.pop
+      end
+
+      return result
     end
 
     raise StandardError.new("Yada~StandardError: Invalid expression #{exp}")
