@@ -21,74 +21,36 @@ class Yada
   end
 
   def eval(exp, env = @global)
-
-    # Self-evaluating expressions
-    #
-
-    # Numbers
-    if is_number(exp)
-      return exp
-    end
-
-    # Strings/Symbols
-    if is_string(exp)
-      return exp.slice(1, exp.length - 2)
-    end
-
-    case exp[0]
-    when 'begin'   then return eval_begin(exp, env)
-    when 'if'      then return eval_if(exp, env)
-    when 'switch'  then return eval_switch(exp, env)
-    when 'default' then return eval_default(exp, env)
-    when 'while'   then return eval_while(exp, env)
-    when 'for'     then return eval_for(exp, env)
-    when 'var'     then return eval_var(exp, env)
-    when 'set'     then return eval_set(exp, env)
-    when 'defun'   then return eval_defun(exp, env)
-    when 'lambda'  then return eval_lambda(exp, env)
-    end
-
-    # Variable access
-    if is_variable_name(exp)
-      return env.lookup(exp)
-    end
-
-    # Function calls
-    # (function_name arg1 arg2 ...)
-    #
-    if exp.is_a?(Array)
-      fn = eval(exp[0], env)
-      args = exp[1..-1].map { |arg| eval(arg, env) }
-
-      # 1. Native function:
-      if fn.is_a?(Proc) || fn.is_a?(Method)
-        return fn.call(*args)
-      end
-
-      # 2. User-defined function:
-      activation_record = {}
-      fn[:args].each_with_index do |arg, i|
-        activation_record[arg] = args[i]
-      end
-
-      activation_env = Environment.new(activation_record, fn[:env])
-
-      new_context = ExecutionContext.new(activation_env, nil) # Assuming ExecutionContext is a class you've defined
-      @execution_stack.push(new_context)
-
-      begin
-        result = eval_body(fn[:body], activation_env)
-      ensure
-        @execution_stack.pop
-      end
-
-      return result
-    end
+    return handle_self_evaluating(exp) if self_evaluating?(exp)
+    return handle_expression(exp, env) if exp.is_a?(Array)
+    return env.lookup(exp) if is_variable_name(exp)
 
     raise YadaError.new("Yada~Error: Invalid expression #{exp}")
   end
 
   private
+
+  # Check if the expression is self-evaluating
+  def self_evaluating?(exp)
+    exp.is_a?(Numeric) || is_string(exp)
+  end
+
+  # Handle self-evaluating expressions
+  def handle_self_evaluating(exp)
+    exp.is_a?(Numeric) ? exp : exp.slice(1, exp.length - 2)
+  end
+
+  # Evaluate an expression
+  def handle_expression(exp, env)
+    case exp[0]
+    when 'begin', 'if', 'switch',
+         'default', 'while', 'for', 'var',
+         'set', 'defun', 'lambda'
+      send("eval_#{exp[0]}", exp, env)
+    else
+      handle_function_call(exp, env)
+    end
+  end
 
   # block: sequence of expressions
   # ['begin', exp1, exp2, ...]
@@ -186,6 +148,7 @@ class Yada
     return env.assign(variable, eval(value, env))
   end
 
+  # Evaluate the body of a function
   def eval_body(body, env)
     if (body[0] == 'begin')
       return eval_block(body, env)
@@ -193,18 +156,22 @@ class Yada
     return eval(body, env)
   end
 
+  # Check if the expression is a number
   def is_number(exp)
     return exp.is_a? Numeric
   end
 
+  # Check if the expression is a string
   def is_string(exp)
     return exp.is_a?(String) && exp.start_with?('"') && exp.end_with?('"')
   end
 
+  # Check if the expression is a variable name
   def is_variable_name(exp)
     return exp.is_a?(String) && /^[+\-*\/<>=,!^a-zA-Z0-9_]+$/.match(exp)
   end
 
+  # Evaluate a block of expressions
   def eval_block(exp, env)
     _, *exps = exp
     result = nil
@@ -213,6 +180,36 @@ class Yada
     end
 
     result
+  end
+
+  #
+  # Function call handling
+  def handle_function_call(exp, env)
+    fn = eval(exp[0], env)
+    args = exp[1..-1].map { |arg| eval(arg, env) }
+
+    if fn.is_a?(Proc) || fn.is_a?(Method)
+      fn.call(*args)
+    else
+      # User-defined function handling
+      execute_user_defined_function(fn, args, env)
+    end
+  end
+
+  #
+  # User-defined function handling
+  def execute_user_defined_function(fn, args, env)
+    activation_record = fn[:args].zip(args).to_h
+    activation_env = Environment.new(activation_record, fn[:env])
+
+    new_context = ExecutionContext.new(activation_env, nil)
+    @execution_stack.push(new_context)
+
+    begin
+      eval_body(fn[:body], activation_env)
+    ensure
+      @execution_stack.pop
+    end
   end
 
 end
