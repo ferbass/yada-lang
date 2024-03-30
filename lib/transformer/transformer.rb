@@ -2,6 +2,8 @@
 # Author: ferbass
 # This is a simple AST transformer for the Yada language.
 #
+# The transformer is responsible for transforming the AST into a form that is easier to interpret.
+#
 class Transformer
 
   # Transform a variable definition to a lambda
@@ -10,6 +12,11 @@ class Transformer
     return ['var', name, ['lambda', args, body]]
   end
 
+  # Transform a switch statement to an if statement
+  # (switch
+  #  (cond1 block1)
+  #  (cond2 block2)
+  #  (default block3))
   def switch_to_if(exp)
     _tag, *cases = exp
 
@@ -31,4 +38,18 @@ class Transformer
 
     return if_exp
   end
+
+  # Transform a for loop to a while loop
+  # (for (var i 0) (< i 10) (set i (+ i 1)) (say i))
+  def for_to_while(exp)
+    _tag, init, condition, update, body = exp
+
+    return ['begin',
+            init,
+            ['while', condition,
+             ['begin',
+              body,
+              update]]]
+  end
+
 end

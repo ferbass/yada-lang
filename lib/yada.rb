@@ -79,6 +79,7 @@ class Yada
 
     # Switch expression
     # ['switch', ['case1', 'block1'], ['case2', 'block2'], ['default', 'block3']]
+    #
     if exp[0] == 'switch'
       if_exp = @transformer.switch_to_if(exp)
       return eval(if_exp, env)
@@ -86,6 +87,7 @@ class Yada
 
     # While expression
     # ['while', condition, body]
+    # (while (< i 10) (say i))
 
     if exp[0] == 'while'
       _, condition, body = exp
@@ -96,6 +98,17 @@ class Yada
       end
       return result
     end
+
+    # For expression
+    # ['for', init, condition, update, body]
+    # (for (var i 0) (< i 10) (set i (+ i 1)) (say i))
+    #
+    # Syntax sugar for: (begin init (while condition (begin body update)))
+    if exp[0] == 'for'
+      while_exp = @transformer.for_to_while(exp)
+      return eval(while_exp, env)
+    end
+
     # Variables
 
     # Variable declaration
