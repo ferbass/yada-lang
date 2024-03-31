@@ -17,14 +17,14 @@
 
 class YYParse
   @@productions = [[-1,1,'_handler1'],
-[0,1,'_handler2'],
-[0,1,'_handler3'],
-[1,1,'_handler4'],
-[1,1,'_handler5'],
-[1,1,'_handler6'],
-[2,3,'_handler7'],
-[3,2,'_handler8'],
-[3,0,'_handler9']]
+                   [0,1,'_handler2'],
+                   [0,1,'_handler3'],
+                   [1,1,'_handler4'],
+                   [1,1,'_handler5'],
+                   [1,1,'_handler6'],
+                   [2,3,'_handler7'],
+                   [3,2,'_handler8'],
+                   [3,0,'_handler9']]
   @@tokens = {'NUMBER' => "4", 'STRING' => "5", 'SYMBOL' => "6", '\'(\'' => "7", '\')\'' => "8", '$' => "9"}
   @@table = [{'0' => 1, '1' => 2, '2' => 3, '4' => "s4", '5' => "s5", '6' => "s6", '7' => "s7"}, {'9' => "acc"}, {'4' => "r1", '5' => "r1", '6' => "r1", '7' => "r1", '8' => "r1", '9' => "r1"}, {'4' => "r2", '5' => "r2", '6' => "r2", '7' => "r2", '8' => "r2", '9' => "r2"}, {'4' => "r3", '5' => "r3", '6' => "r3", '7' => "r3", '8' => "r3", '9' => "r3"}, {'4' => "r4", '5' => "r4", '6' => "r4", '7' => "r4", '8' => "r4", '9' => "r4"}, {'4' => "r5", '5' => "r5", '6' => "r5", '7' => "r5", '8' => "r5", '9' => "r5"}, {'3' => 8, '4' => "r8", '5' => "r8", '6' => "r8", '7' => "r8", '8' => "r8"}, {'0' => 10, '1' => 2, '2' => 3, '4' => "s4", '5' => "s5", '6' => "s6", '7' => "s7", '8' => "s9"}, {'4' => "r6", '5' => "r6", '6' => "r6", '7' => "r6", '8' => "r6", '9' => "r6"}, {'4' => "r7", '5' => "r7", '6' => "r7", '7' => "r7", '8' => "r7"}]
 
@@ -91,40 +91,40 @@ class YYParse
   @@tokenizer = nil
 
   def self._handler1(param_1)
-YYParse.__ = param_1
-end
+    YYParse.__ = param_1
+  end
 
-def self._handler2(param_1)
-YYParse.__ = param_1
-end
+  def self._handler2(param_1)
+    YYParse.__ = param_1
+  end
 
-def self._handler3(param_1)
-YYParse.__ = param_1
-end
+  def self._handler3(param_1)
+    YYParse.__ = param_1
+  end
 
-def self._handler4(param_1)
- YYParse.__ = Integer(param_1)
-end
+  def self._handler4(param_1)
+    YYParse.__ = Integer(param_1)
+  end
 
-def self._handler5(param_1)
-YYParse.__ = param_1
-end
+  def self._handler5(param_1)
+    YYParse.__ = param_1
+  end
 
-def self._handler6(param_1)
-YYParse.__ = param_1
-end
+  def self._handler6(param_1)
+    YYParse.__ = param_1
+  end
 
-def self._handler7(param_1,param_2,param_3)
- YYParse.__ = param_2
-end
+  def self._handler7(param_1,param_2,param_3)
+    YYParse.__ = param_2
+  end
 
-def self._handler8(param_1,param_2)
- param_1.push(param_2); YYParse.__ = param_1
-end
+  def self._handler8(param_1,param_2)
+    param_1.push(param_2); YYParse.__ = param_1
+  end
 
-def self._handler9()
- YYParse.__ = []
-end
+  def self._handler9()
+    YYParse.__ = []
+  end
 
   def self.tokenizer=(tokenizer)
     @@tokenizer = tokenizer
@@ -312,12 +312,12 @@ end
 
 class SyntaxToolTokenizer__
   @@lex_rules = [[/\A\(/, '_lex_rule1'],
-[/\A\)/, '_lex_rule2'],
-[/\A\s+/, '_lex_rule3'],
-[/\A"[^\"]*"/, '_lex_rule4'],
-[/\A\d+/, '_lex_rule5'],
-[/\A[\w\-+*=<>!,^\/]+/, '_lex_rule6'],
-[/\A\s+/, '_lex_rule7']]
+                       [/\A\)/, '_lex_rule2'],
+  [/\A\s+/, '_lex_rule3'],
+  [/\A"[^\"]*"/, '_lex_rule4'],
+  [/\A\d+/, '_lex_rule5'],
+  [/\A[\w\-+*=<>!,^\/]+/, '_lex_rule6'],
+  [/\A\s+/, '_lex_rule7']]
   @@lex_rules_by_conditions = {'INITIAL' => [0, 1, 2, 3, 4, 5, 6]}
 
 
@@ -345,32 +345,32 @@ class SyntaxToolTokenizer__
   }
 
   def _lex_rule1()
-return "'('";
-end
+    return "'('";
+  end
 
-def _lex_rule2()
-return "')'";
-end
+  def _lex_rule2()
+    return "')'";
+  end
 
-def _lex_rule3()
-#/* skip whitespace */
-end
+  def _lex_rule3()
+    #/* skip whitespace */
+  end
 
-def _lex_rule4()
-return 'STRING'
-end
+  def _lex_rule4()
+    return 'STRING'
+  end
 
-def _lex_rule5()
-return 'NUMBER'
-end
+  def _lex_rule5()
+    return 'NUMBER'
+  end
 
-def _lex_rule6()
-return 'SYMBOL'
-end
+  def _lex_rule6()
+    return 'SYMBOL'
+  end
 
-def _lex_rule7()
+  def _lex_rule7()
 
-end
+  end
 
   def init_string(string)
     @string = string
@@ -467,85 +467,85 @@ end
     throw_unexpected_token(string[0], @current_line, @current_column)
   end
 
-  ##
-  # Throws default "Unexpected token" exception, showing the actual
-  # line from the source, pointing with the ^ marker to the bad token.
-  # In addition, shows `line:column` location.
+##
+# Throws default "Unexpected token" exception, showing the actual
+# line from the source, pointing with the ^ marker to the bad token.
+# In addition, shows `line:column` location.
+#
+def throw_unexpected_token(symbol, line, column)
+  # line_source = @string.split('\n')[line - 1]
+
+  # pad = ' ' * column;
+  # line_data = "\n\n" + line_source + "\n" + pad + "^\n"
+
+  # raise (
+  #   line_data + 'Unexpected token: "' + symbol.to_s + '" at ' +
+  #   line.to_s + ':' + column.to_s + '.'
+  # )
   #
-  def throw_unexpected_token(symbol, line, column)
-   # line_source = @string.split('\n')[line - 1]
+  symbol_str = symbol.to_s
+  line_source = @string.split("\n")[line - 1] || ""
 
-   # pad = ' ' * column;
-   # line_data = "\n\n" + line_source + "\n" + pad + "^\n"
+  pad = ' ' * column
+  line_data = "\n\n#{line_source}\n#{pad}^\n"
 
-   # raise (
-   #   line_data + 'Unexpected token: "' + symbol.to_s + '" at ' +
-   #   line.to_s + ':' + column.to_s + '.'
-   # )
-    #
-    symbol_str = symbol.to_s
-    line_source = @string.split("\n")[line - 1] || ""
+  raise (
+    "#{line_data}Unexpected token: \"#{symbol_str}\" at #{line}:#{column}."
+  )
+end
 
-    pad = ' ' * column
-    line_data = "\n\n#{line_source}\n#{pad}^\n"
+def _capture_location(matched)
+  # Absolute offsets.
+  @token_start_offset = @cursor
 
-    raise (
-      "#{line_data}Unexpected token: \"#{symbol_str}\" at #{line}:#{column}."
-    )
+  # Line-based locations, start.
+  @token_start_line = @current_line
+  @token_start_column = @token_start_offset - @current_line_begin_offset
+
+  # Extract `\n` in the matched token.
+  matched.enum_for(:scan, /\n/).each {
+    Regexp.last_match.begin(0)
+    @current_line += 1
+    @current_line_begin_offset = @token_start_offset + Regexp.last_match.begin(0) + 1
+  }
+
+  @token_end_offset = @cursor + matched.length
+
+  # Line-based locations, end.
+  @token_end_line = @current_line
+  @token_end_column = @current_column = (@token_end_offset - @current_line_begin_offset)
+end
+
+def _to_token(token_type, yytext='')
+  return {
+    :type => token_type,
+    :value => yytext,
+    :start_offset => @token_start_offset,
+    :end_offset => @token_end_offset,
+    :start_line => @token_start_line,
+    :end_line => @token_end_line,
+    :start_column => @token_start_column,
+    :end_column => @token_end_column,
+  }
+end
+
+def is_eof
+  return @cursor == @string.length
+end
+
+def has_more_tokens
+  return @cursor <= @string.length
+end
+
+def match(string, regexp)
+  matches = regexp.match(string)
+  if matches != nil
+    _capture_location(matches[0])
+    @cursor += matches[0].length
+    return matches[0]
   end
-
-  def _capture_location(matched)
-    # Absolute offsets.
-    @token_start_offset = @cursor
-
-    # Line-based locations, start.
-    @token_start_line = @current_line
-    @token_start_column = @token_start_offset - @current_line_begin_offset
-
-    # Extract `\n` in the matched token.
-    matched.enum_for(:scan, /\n/).each {
-      Regexp.last_match.begin(0)
-      @current_line += 1
-      @current_line_begin_offset = @token_start_offset + Regexp.last_match.begin(0) + 1
-    }
-
-    @token_end_offset = @cursor + matched.length
-
-    # Line-based locations, end.
-    @token_end_line = @current_line
-    @token_end_column = @current_column = (@token_end_offset - @current_line_begin_offset)
-  end
-
-  def _to_token(token_type, yytext='')
-    return {
-      :type => token_type,
-      :value => yytext,
-      :start_offset => @token_start_offset,
-      :end_offset => @token_end_offset,
-      :start_line => @token_start_line,
-      :end_line => @token_end_line,
-      :start_column => @token_start_column,
-      :end_column => @token_end_column,
-    }
-  end
-
-  def is_eof
-    return @cursor == @string.length
-  end
-
-  def has_more_tokens
-    return @cursor <= @string.length
-  end
-
-  def match(string, regexp)
-    matches = regexp.match(string)
-    if matches != nil
-      _capture_location(matches[0])
-      @cursor += matches[0].length
-      return matches[0]
-    end
-    return nil
-  end
+  return nil
+end
 end
 
 YYParse::tokenizer = SyntaxToolTokenizer__.new
