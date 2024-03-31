@@ -48,12 +48,37 @@ class Yada
   def handle_expression(exp, env)
     case exp[0]
     when 'begin', 'if', 'switch',
-         'default', 'while', 'for', 'var',
-         'set', 'defun', 'lambda'
+         'default', 'while', 'for',
+         'var', 'set', 'defun',
+         'lambda', 'class', 'new',
+          'prop'
       send("eval_#{exp[0]}", exp, env)
     else
       handle_function_call(exp, env)
     end
+  end
+
+  def eval_class(exp, env)
+    _tag, name, parent, body = exp
+    parent_env = env.lookup(parent, env) rescue env
+
+    class_env = Environment.new({}, parent_env)
+    eval_body(body, class_env) unless body.to_a.empty?
+
+    return env.define(name, class_env)
+  end
+
+  def eval_new(exp, env)
+    _tag, class_name, *args = exp
+    class_env = eval(class_name, env)
+    instance_env = Environment.new({}, class_env)
+
+    execute_user_defined_function(
+      class_env.lookup('init'),
+      [instance_env, *args],
+    )
+
+    return instance_env
   end
 
   # block: sequence of expressions
@@ -146,8 +171,31 @@ class Yada
   # ['set', 'variable', value]
   # ['set', 'x', 5]
   def eval_set(exp, env)
-    _, variable, value = exp
-    return env.assign(variable, eval(value, env))
+    _, ref, value = exp
+
+    return define_prop(exp, env) if ref[0] == 'prop'
+
+    return env.assign(ref, eval(value, env))
+  end
+
+  # Define Property
+  # ['prop', instance, property]
+  # (prop p x)
+  #
+  def define_prop(exp, env)
+    _, ref, value = exp
+    _, instance, prop = ref
+    instance_env = eval(instance, env)
+    return instance_env.define(prop, eval(value, env))
+  end
+
+  # Eval Property
+  # ['prop', instance, property]
+  # (prop p x)
+  def eval_prop(exp, env)
+    _, instance, prop = exp
+    instance_env = eval(instance, env)
+    return instance_env.lookup(prop)
   end
 
   # Evaluate the body of a function
@@ -194,13 +242,13 @@ class Yada
       fn.call(*args)
     else
       # User-defined function handling
-      execute_user_defined_function(fn, args, env)
+      execute_user_defined_function(fn, args)
     end
   end
 
   #
   # User-defined function handling
-  def execute_user_defined_function(fn, args, env)
+  def execute_user_defined_function(fn, args)
     activation_record = fn[:args].zip(args).to_h
     activation_env = Environment.new(activation_record, fn[:env])
 

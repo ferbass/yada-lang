@@ -17,6 +17,11 @@ class TestUtil < Test::Unit::TestCase
     assert_not_equal(yada.eval(exp), expected)
   end
 
+  def yada_assert_not_nil(yada, code)
+    exp = YadaParser.parse("(begin #{code})")
+    assert_not_nil(yada.eval_global(exp))
+  end
+
   def yada_assert_raises(yada, code, expected)
     exp = YadaParser.parse(code)
 
