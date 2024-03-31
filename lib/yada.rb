@@ -28,6 +28,10 @@ class Yada
     raise YadaError.new("Yada~Error: Invalid expression #{exp}")
   end
 
+  def eval_global(exp)
+    return eval_body(exp, @global)
+  end
+
   private
 
   # Check if the expression is self-evaluating

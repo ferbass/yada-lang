@@ -27,14 +27,14 @@ class TestMath < TestYada
     yada_assert_equal(@yada, '(/ (+ (* 2 5) 5) 5)', 3)
     yada_assert_equal(@yada, '(/ (+ (* 2 5) (- 8 1)) 5)', 3)
 
-    yada_assert_equal(@yada, '(begin (var x 1) (++ x))', 2)
-    yada_assert_equal(@yada, '(begin (var x 1) (-- x))', 0)
-    yada_assert_equal(@yada, '(begin (var x 1) (+= x 2))', 3)
-    yada_assert_equal(@yada, '(begin (var x 1) (-= x 2))', -1)
-    yada_assert_equal(@yada, '(begin (var x 1) (*= x 2))', 2)
-    yada_assert_equal(@yada, '(begin (var x 1) (/= x 2))', 0)
+    yada_assert_equal(@yada, '(var x 1) (++ x)', 2)
+    yada_assert_equal(@yada, '(var x 1) (-- x)', 0)
+    yada_assert_equal(@yada, '(var x 1) (+= x 2)', 3)
+    yada_assert_equal(@yada, '(var x 1) (-= x 2)', -1)
+    yada_assert_equal(@yada, '(var x 1) (*= x 2)', 2)
+    yada_assert_equal(@yada, '(var x 1) (/= x 2)', 0)
 
-    yada_assert_equal(@yada, '(begin (var x 2) (^ x 3))', 8)
+    yada_assert_equal(@yada, '(var x 2) (^ x 3)', 8)
   end
 
 end
