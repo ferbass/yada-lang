@@ -7,6 +7,7 @@
 class Environment
 
   attr_reader :record
+  attr_reader :parent
 
   #
   # Initialize the environment
@@ -27,7 +28,6 @@ class Environment
     @record[name] = value
     return value
   end
-
 
   #
   # Assign a variable with given name and value
