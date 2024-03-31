@@ -473,14 +473,24 @@ end
   # In addition, shows `line:column` location.
   #
   def throw_unexpected_token(symbol, line, column)
-    line_source = @string.split('\n')[line - 1]
+   # line_source = @string.split('\n')[line - 1]
 
-    pad = ' ' * column;
-    line_data = "\n\n" + line_source + "\n" + pad + "^\n"
+   # pad = ' ' * column;
+   # line_data = "\n\n" + line_source + "\n" + pad + "^\n"
+
+   # raise (
+   #   line_data + 'Unexpected token: "' + symbol.to_s + '" at ' +
+   #   line.to_s + ':' + column.to_s + '.'
+   # )
+    #
+    symbol_str = symbol.to_s
+    line_source = @string.split("\n")[line - 1] || ""
+
+    pad = ' ' * column
+    line_data = "\n\n#{line_source}\n#{pad}^\n"
 
     raise (
-      line_data + 'Unexpected token: "' + symbol.to_s + '" at ' +
-      line.to_s + ':' + column.to_s + '.'
+      "#{line_data}Unexpected token: \"#{symbol_str}\" at #{line}:#{column}."
     )
   end
 
