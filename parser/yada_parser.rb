@@ -315,7 +315,7 @@ class SyntaxToolTokenizer__
                        [/\A\)/, '_lex_rule2'],
   [/\A\s+/, '_lex_rule3'],
   [/\A"[^\"]*"/, '_lex_rule4'],
-  [/\A\d+/, '_lex_rule5'],
+  [/\A\-?\d+/, '_lex_rule5'],
   [/\A[\w\-+*=<>!,^\/]+/, '_lex_rule6'],
   [/\A\s+/, '_lex_rule7']]
   @@lex_rules_by_conditions = {'INITIAL' => [0, 1, 2, 3, 4, 5, 6]}
