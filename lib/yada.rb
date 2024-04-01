@@ -51,13 +51,18 @@ class Yada
          'default', 'while', 'for',
          'var', 'set', 'defun',
          'lambda', 'class', 'new',
-          'prop', 'super'
+          'prop', 'super', 'module'
       send("eval_#{exp[0]}", exp, env)
     else
       handle_function_call(exp, env)
     end
   end
 
+  # Class
+  # ['class', 'class_name', 'parent', body]
+  # (class Person Object (var name "John"))
+  # => Person
+  #
   def eval_class(exp, env)
     _tag, name, parent, body = exp
     parent_env = eval(parent, env) || env
@@ -68,11 +73,21 @@ class Yada
     return env.define(name, class_env)
   end
 
+  # Super
+  # ['super', 'class_name']
+  # (super Person)
+  # => Object
+  #
   def eval_super(exp, env)
     _tag, class_name = exp
     return eval(class_name, env).parent
   end
 
+  # New
+  # ['new', 'class_name', 'arg1', 'arg2', ...]
+  # (new Person "John")
+  # => Person
+  #
   def eval_new(exp, env)
     _tag, class_name, *args = exp
     class_env = eval(class_name, env)
@@ -84,6 +99,18 @@ class Yada
     )
 
     return instance_env
+  end
+
+  # Module
+  # ['module', 'module_name', body]
+  # (module Math (var PI 3.141592653589793))
+  # => Math
+  #
+  def eval_module(exp, env)
+    _tag, name, body = exp
+    module_env = Environment.new({}, env)
+    eval_body(body, module_env)
+    return env.define(name, module_env)
   end
 
   # block: sequence of expressions
