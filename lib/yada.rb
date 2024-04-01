@@ -60,7 +60,7 @@ class Yada
 
   def eval_class(exp, env)
     _tag, name, parent, body = exp
-    parent_env = env.lookup(parent, env) rescue env
+    parent_env = eval(parent, env) || env
 
     class_env = Environment.new({}, parent_env)
     eval_body(body, class_env) unless body.to_a.empty?
