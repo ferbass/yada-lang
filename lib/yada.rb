@@ -51,7 +51,7 @@ class Yada
          'default', 'while', 'for',
          'var', 'set', 'defun',
          'lambda', 'class', 'new',
-          'prop'
+          'prop', 'super'
       send("eval_#{exp[0]}", exp, env)
     else
       handle_function_call(exp, env)
@@ -66,6 +66,11 @@ class Yada
     eval_body(body, class_env) unless body.to_a.empty?
 
     return env.define(name, class_env)
+  end
+
+  def eval_super(exp, env)
+    _tag, class_name = exp
+    return eval(class_name, env).parent
   end
 
   def eval_new(exp, env)
