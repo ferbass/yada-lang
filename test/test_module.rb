@@ -1,6 +1,6 @@
 class TestModule < TestYada
 
-  def test_module_declaration_and_import
+  def test_module_declaration
 
     yada_assert_equal(@yada, '(module Math
                                (begin

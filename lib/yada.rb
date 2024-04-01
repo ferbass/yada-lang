@@ -6,11 +6,12 @@
 #
 #
 
-require_relative 'environment.rb'
-require_relative 'execution_context.rb'
-require_relative 'transformer/transformer.rb'
-require_relative 'native_functions.rb'
-require_relative 'error/yada_error.rb'
+require_relative 'environment'
+require_relative 'execution_context'
+require_relative 'transformer/transformer'
+require_relative 'native_functions'
+require_relative 'error/yada_error'
+require_relative '../parser/yada_parser'
 
 class Yada
 
@@ -48,10 +49,11 @@ class Yada
   def handle_expression(exp, env)
     case exp[0]
     when 'begin', 'if', 'switch',
-         'default', 'while', 'for',
-         'var', 'set', 'defun',
-         'lambda', 'class', 'new',
-          'prop', 'super', 'module'
+      'default', 'while', 'for',
+      'var', 'set', 'defun',
+      'lambda', 'class', 'new',
+      'prop', 'super', 'module',
+      'import'
       send("eval_#{exp[0]}", exp, env)
     else
       handle_function_call(exp, env)
@@ -111,6 +113,21 @@ class Yada
     module_env = Environment.new({}, env)
     eval_body(body, module_env)
     return env.define(name, module_env)
+  end
+
+  # Import
+  # ['import', 'module_name']
+  # (import Math)
+  # => Math
+  #
+  def eval_import(exp, env)
+    _tag, name = exp
+
+    module_src = File.read("lib/modules/#{name}.ya", encoding: 'utf-8') || File.read("lib/modules/#{name}.yada", encoding: 'utf-8')
+    body = YadaParser.parse("(begin #{module_src})")
+    module_exp = ['module', name, body]
+
+    return eval(module_exp, @global)
   end
 
   # block: sequence of expressions
