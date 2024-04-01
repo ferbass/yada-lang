@@ -48,25 +48,7 @@ class Environment
   # @raise [NameError] if the variable is not found
   #
   def lookup(name)
-    return lookup_value(name)
-  end
-
-  #
-  # Lookup a variable with given name
-  # @param name [String] variable name
-  # @return [Object] the variable value
-  # @raise [Yada~UndefinedError] if the variable is not found
-  # TODO:: Refactor error message to identify if it is class/variable/function etc
-  #
-
-  def lookup_value(name)
-    if @record.key?(name)
-      return @record[name]
-    elsif @parent
-      return @parent.lookup_value(name)
-    else
-      raise NameError.new("Yada~UndefinedError: Undefined '#{name}'")
-    end
+    return resolve(name).record[name]
   end
 
   #
@@ -76,13 +58,11 @@ class Environment
   # @raise [Yada~UndefinedError] if the variable is not found
   # TODO:: Refactor error message to identify if it is class/variable/function etc
   def resolve(name)
-    if @record.key?(name)
-      return self
-    end
-    if @parent
-      return @parent.resolve(name)
-    end
-    raise NameError.new("Yada~UndefinedError: Undefined #{name}")
+    return self if @record.key?(name)
+
+    raise NameError.new("Yada~UndefinedError: Undefined '#{name}'") unless @parent
+
+    return @parent.resolve(name)
   end
 
 end
