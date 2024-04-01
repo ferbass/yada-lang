@@ -6,7 +6,6 @@ class TestVariables < TestYada
     yada_assert_equal(@yada, '(var x 5)', 5)
     #variable access
     yada_assert_equal(@yada, 'x', 5)
-    assert_equal(@yada.eval('x'), 5)
 
     assert_raises(NameError) do
       @yada.eval('y')
