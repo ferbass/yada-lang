@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require_relative '../parser/yada_parser.rb'
+require_relative '../lib/yada.rb'
+
+def eval_global(src, yada)
+  exp = YadaParser.parse("(begin #{src})")
+  yada.eval_global(exp)
+end
+
+def main(argv)
+  mode = argv[0]
+  exp = argv[1]
+
+  yada = Yada.new
+
+  # Direct expression:
+  if mode == '-e'
+    return eval_global(exp, yada)
+  end
+
+  # Yada file:
+  if mode == '-f'
+    src = File.read(exp)
+    return eval_global(src, yada)
+  end
+end
+
+if __FILE__ == $0
+  main(ARGV)
+end
